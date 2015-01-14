@@ -39,5 +39,6 @@
 @property IBOutlet UIImageView *placeholderView;
 @property (nonatomic, weak) id <PTKViewDelegate> delegate;
 @property (readonly) PTKCard *card;
+@property (nonatomic) IBInspectable UITextBorderStyle borderStyle;
 
 @end

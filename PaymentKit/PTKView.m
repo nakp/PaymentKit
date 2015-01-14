@@ -9,6 +9,8 @@
 #define RGB(r,g,b) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:1.0f]
 #define DarkGreyColor RGB(0,0,0)
 #define RedColor RGB(253,0,17)
+#define GreyColor RGB(171,171,171)
+#define DefaultFont     [UIFont systemFontOfSize:17]
 #define DefaultBoldFont [UIFont boldSystemFontOfSize:17]
 
 #define kPTKViewPlaceholderViewAnimationDuration 0.25
@@ -80,16 +82,12 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     _isValidState = NO;
 
     self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, 290, 46);
-    self.backgroundColor = [UIColor clearColor];
-
-    UIImageView *backgroundImageView = [[UIImageView alloc] initWithFrame:self.bounds];
-    backgroundImageView.image = [[UIImage imageNamed:@"textfield"]
-            resizableImageWithCapInsets:UIEdgeInsetsMake(0, 8, 0, 8)];
-    [self addSubview:backgroundImageView];
 
     self.innerView = [[UIView alloc] initWithFrame:CGRectMake(40, 12, self.frame.size.width - 40, 20)];
     self.innerView.clipsToBounds = YES;
-
+    
+    [self setupBackground];
+    [self setupBorderStyle];
     [self setupPlaceholderView];
     [self setupCardNumberField];
     [self setupCardExpiryField];
@@ -113,6 +111,63 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     [self stateCardNumber];
 }
 
+- (void)setupBackground
+{
+    self.backgroundColor = self.backgroundColor ? : [UIColor whiteColor];
+}
+
+- (void)setupBorderStyle
+{
+    self.borderStyle = UITextBorderStyleBezel;
+}
+
+- (void)setupBorderStyleNone
+{
+    self.layer.borderColor = [UIColor clearColor].CGColor;
+    self.layer.borderWidth = 0.0f;
+    self.layer.cornerRadius = 0.0f;
+}
+
+- (void)setupBorderStyleLine
+{
+    self.layer.borderColor = DarkGreyColor.CGColor;
+    self.layer.borderWidth = 1.0f;
+}
+
+- (void)setupBorderStyleBezel
+{
+    NSLog(@"Nope, no bezel for you!");
+    [self setupBorderStyleRoundedRect];
+}
+
+- (void)setupBorderStyleRoundedRect
+{
+    self.layer.borderColor = GreyColor.CGColor;
+    self.layer.borderWidth = 0.5f;
+    self.layer.cornerRadius = 8.0f;
+}
+
+- (void)setBorderStyle:(UITextBorderStyle)borderStyle
+{
+    _borderStyle = borderStyle;
+    switch (borderStyle) {
+        case UITextBorderStyleNone:
+            [self setupBorderStyleNone];
+            break;
+        case UITextBorderStyleRoundedRect:
+            [self setupBorderStyleRoundedRect];
+            break;
+        case UITextBorderStyleLine:
+            [self setupBorderStyleLine];
+            break;
+        case UITextBorderStyleBezel:
+            [self setupBorderStyleBezel];
+            break;
+        default:
+            [self setupBorderStyleRoundedRect];
+            break;
+    }
+}
 
 - (void)setupPlaceholderView
 {
@@ -133,7 +188,7 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     self.cardNumberField.placeholder = [self.class localizedStringWithKey:@"placeholder.card_number" defaultValue:@"1234 5678 9012 3456"];
     self.cardNumberField.keyboardType = UIKeyboardTypeNumberPad;
     self.cardNumberField.textColor = DarkGreyColor;
-    self.cardNumberField.font = DefaultBoldFont;
+    self.cardNumberField.font = DefaultFont;
 
     [self.cardNumberField.layer setMasksToBounds:YES];
 }
@@ -145,7 +200,7 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     self.cardExpiryField.placeholder = [self.class localizedStringWithKey:@"placeholder.card_expiry" defaultValue:@"MM/YY"];
     self.cardExpiryField.keyboardType = UIKeyboardTypeNumberPad;
     self.cardExpiryField.textColor = DarkGreyColor;
-    self.cardExpiryField.font = DefaultBoldFont;
+    self.cardExpiryField.font = DefaultFont;
 
     [self.cardExpiryField.layer setMasksToBounds:YES];
 }
@@ -157,7 +212,7 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     self.cardCVCField.placeholder = [self.class localizedStringWithKey:@"placeholder.card_cvc" defaultValue:@"CVC"];
     self.cardCVCField.keyboardType = UIKeyboardTypeNumberPad;
     self.cardCVCField.textColor = DarkGreyColor;
-    self.cardCVCField.font = DefaultBoldFont;
+    self.cardCVCField.font = DefaultFont;
 
     [self.cardCVCField.layer setMasksToBounds:YES];
 }
