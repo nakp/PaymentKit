@@ -41,4 +41,5 @@
 @property (readonly) PTKCard *card;
 @property (nonatomic) IBInspectable UITextBorderStyle borderStyle;
 
+- (void)clearInformation;
 @end

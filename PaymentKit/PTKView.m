@@ -659,4 +659,11 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     return [self.firstResponderField resignFirstResponder];
 }
 
+- (void)clearInformation
+{
+    self.cardNumberField.text = nil;
+    self.cardExpiryField.text = nil;
+    self.cardCVCField.text = nil;
+}
+
 @end
