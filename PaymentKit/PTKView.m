@@ -666,4 +666,9 @@ static NSString *const kPTKOldLocalizedStringsTableName = @"STPaymentLocalizable
     self.cardCVCField.text = nil;
 }
 
+- (void)setUpCardNumberPlaceholder:(NSString *)placeholder
+{
+    self.cardNumberField.placeholder = placeholder;
+}
+
 @end

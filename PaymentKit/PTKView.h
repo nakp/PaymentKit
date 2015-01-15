@@ -42,4 +42,5 @@
 @property (nonatomic) IBInspectable UITextBorderStyle borderStyle;
 
 - (void)clearInformation;
+- (void)setUpCardNumberPlaceholder:(NSString *)placeholder;
 @end
